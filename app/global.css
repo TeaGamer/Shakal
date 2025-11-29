@@ -1,0 +1,60 @@
+/* app/global.css */
+
+/* кольори */
+:root {
+  --pantone-7547: #1E2D34; /* фон */
+}
+
+/* базові скидання */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #__next { height: 100%; }
+
+/* фон додатку */
+.app-bg {
+  background: var(--pantone-7547);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* обгортка центру (щоб вирівнювати) */
+.center-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* сам "квадрат" — тут background = напівпрозорий (50%) */
+.center-card {
+  width: min(1000px, 92vw);         /* змінюється під екран */
+  height: min(640px, 72vh);        /* можна змінити під потреби */
+  border-radius: 20px;             /* закруглені кути */
+  background: rgba(242, 243, 238); /* 50% прозорості; змінюй останнє число */
+  backdrop-filter: blur(4px);      /* опціонально: розмиває фон під панеллю */
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+/* плейсхолдер всередині */
+.center-placeholder {
+  text-align: center;
+  color: rgba(0,0,0,0.85); /* текст темний, бо фон панелі світлий напівпрозорий */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* адаптив: на маленьких екранах трохи зменшуємо висоту та радіус */
+@media (max-width: 600px) {
+  .center-card {
+    height: 60vh;
+    border-radius: 14px;
+    padding: 16px;
+  }
+}
