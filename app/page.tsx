@@ -1,6 +1,6 @@
-// app/layout.tsx
+"use client";
 import "./global.css";
-
+import AudioPlayer from "./components/audioplayer";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,18 +9,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="app-bg">
         <header>
           <img
-           src="/FastMoney.png"          // твій файл
+           src="/FastMoney.png"          // Лого (не забувай писати який тип файлу .png .jpg)
            alt="site logo"
            className="top-logo"
           />
           </header>
           <main className="center-wrapper">
             <div className="center-card">
-              {children}<p>Все пише тут</p>
-              
+              <div className="center-card-inner">
+                {children}<h1>Терез є голосові!</h1>
+                <AudioPlayer />
+              </div>
             </div>
-          </main>
-
+          </main> 
         </div>
       </body>
     </html>

@@ -32,21 +32,25 @@ html, body, #__next { height: 100%; }
 
 /* сам "квадрат" — тут background = напівпрозорий (50%) */
 .center-card {
-  width: min(1000px, 92vw);         /* змінюється під екран */
-  height: min(640px, 72vh);        /* можна змінити під потреби */
-  border-radius: 20px;             /* закруглені кути */
-  background: rgba(242, 243, 238, 0.6); /* 50% прозорості; змінюй останнє число */
-  backdrop-filter: blur(4px);      /* опціонально: розмиває фон під панеллю */
+  width: min(1000px, 92vw);   /* ширина з обмеженням */
+  /* дозволяємо картці підлаштовуватись під висоту тексту */
+  height: auto;
+  max-height: calc(100vh - 160px); /* не більше за вікно (підганяй відступ) */
+  border-radius: 20px;
+  background: rgba(242, 243, 238, 0.6);
+  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   border: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px;
-  font-size: 100px; /* зміни на будь-яке значення */
-}
 
+  /* важливо: блочний макет, внутрішні відступи */
+  display: block;
+  padding: 28px;
+  box-sizing: border-box;
+
+  /* якщо контент дуже довгий — зробимо внутрішній скрол */
+  overflow: auto;
+}
 /* плейсхолдер всередині */
 .center-placeholder {
   text-align: center;
@@ -54,17 +58,32 @@ html, body, #__next { height: 100%; }
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* адаптив: на маленьких екранах трохи зменшуємо висоту та радіус */
+.center-card-inner {
+   width: 100%;         /* ← картка займає всю ширину */
+  text-align: center;  /* ← текст по центру */
+  display: block;
+}
+
+/* розміри тексту всередині */
+.center-card-inner h1 {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.center-card-inner p {
+  font-size: 24px;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
   .center-card {
-    height: 60vh;
     border-radius: 14px;
     padding: 16px;
   }
 }
 
 .top-logo {
-  width: 300px;             /* можеш змінити */
+  width: 300px;             /* розмір лого */
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
 }
@@ -83,4 +102,90 @@ header {
   align-items: center;
   padding-top: 40px;        /* відступ зверху */
   margin-bottom: 20px;      /* відступ між логотипом і блоком */
+}
+
+/* ---------- Audio Player styles ---------- */
+
+/* container */
+.audio-box{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  background: rgba(0,0,0,0.06);
+  padding:14px 18px;
+  border-radius:14px;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  max-width:920px;
+  width: min(92%, 920px);
+}
+
+/* button */
+.audio-btn{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background: linear-gradient(180deg,#2b9cff,#1e90ff);
+  border:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow: 0 8px 24px rgba(30,144,255,0.18);
+  padding:0;
+}
+.audio-btn svg { display:block; width:28px; height:28px; }
+
+/* controls column */
+.audio-controls{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* wave wrapper: canvas sits behind, overlay shows progress */
+.wave-wrapper{
+  position:relative;
+  width:100%;
+  height:48px;
+  border-radius:8px;
+  overflow:hidden;
+  background: rgba(255,255,255,0.03);
+}
+
+/* canvas will be sized by script; make it take full wrapper */
+.wave-wrapper canvas{
+  display:block;
+  width:100%;
+  height:48px;
+}
+
+/* progress overlay (colored) sits on top (left->right) */
+.progress-overlay{
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:0%;
+  background: linear-gradient(90deg, rgba(43,156,255,0.95), rgba(43,156,255,0.5));
+  pointer-events:none;
+  z-index:2;
+}
+
+/* times row */
+.time-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color: rgba(255,255,255,0.85);
+  padding: 0 6px;
+}
+
+/* small screens */
+@media (max-width:700px){
+  .audio-btn{ width:54px; height:54px; }
+  .wave-wrapper{ height:36px; }
+  .wave-wrapper canvas{ height:36px; }
+  .audio-box{ gap:12px; padding:10px 12px; }
 }
