@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="center-wrapper">
             <div className="center-card">
               <div className="center-card-inner">
-                {children}<h1>Терез є голосові!</h1>
+                {children}<h1>Тепер є голосові!</h1>
                 <AudioPlayer />
               </div>
             </div>
