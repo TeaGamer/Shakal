@@ -35,7 +35,6 @@ html, body, #__next { height: 100%; }
   width: min(1000px, 92vw);   /* ширина з обмеженням */
   /* дозволяємо картці підлаштовуватись під висоту тексту */
   height: auto;
-  max-height: calc(100vh - 160px); /* не більше за вікно (підганяй відступ) */
   border-radius: 20px;
   background: rgba(242, 243, 238, 0.6);
   backdrop-filter: blur(4px);
@@ -94,6 +93,15 @@ html, body, #__next { height: 100%; }
     margin-top: 24px;
   }
 }
+
+.lyrics {
+  white-space: pre-line;
+  font-size: 24px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  text-align: left; /* або center, якщо хочеш */
+}
+
 
 header {
   width: 100%;
@@ -168,7 +176,7 @@ header {
   top:0;
   bottom:0;
   width:0%;
-  background: linear-gradient(90deg, rgba(43,156,255,0.95), rgba(43,156,255,0.5));
+  background: linear-gradient(90deg, rgba(43,156,255,0.5), rgba(43,156,255,0.4));
   pointer-events:none;
   z-index:2;
 }
@@ -188,4 +196,57 @@ header {
   .wave-wrapper{ height:36px; }
   .wave-wrapper canvas{ height:36px; }
   .audio-box{ gap:12px; padding:10px 12px; }
+}
+
+/* ---------- Volume Look ---------- */
+/* Volume container */
+.volume-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  padding-left: 8px;
+}
+
+/* Volume slider */
+.volume-slider {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Track */
+.volume-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: rgba(43,156,255,0.35);
+  border-radius: 4px;
+}
+.volume-slider::-moz-range-track {
+  height: 6px;
+  background: rgba(43,156,255,0.35);
+  border-radius: 4px;
+}
+
+/* Thumb */
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2b9cff;
+  border: 2px solid #fff;
+  margin-top: -4px;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(43,156,255,0.6);
+}
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2b9cff;
+  border: 2px solid #fff;
+  cursor: pointer;
 }

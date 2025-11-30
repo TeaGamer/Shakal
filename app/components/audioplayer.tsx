@@ -21,6 +21,9 @@ export default function AudioPlayer(): React.ReactElement {
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
 
+  // Гучність (0–1)
+  const [volume, setVolume] = useState(1);
+
   // format seconds -> mm:ss
   const fmt = (s: number) => {
     if (!s || isNaN(s)) return "00:00";
@@ -28,6 +31,23 @@ export default function AudioPlayer(): React.ReactElement {
     const ss = Math.floor(s % 60).toString().padStart(2, "0");
     return `${mm}:${ss}`;
   };
+
+  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = Number(e.target.value);
+    setVolume(v);
+
+    // Якщо елемент існує зараз — змінюємо негайно
+    if (audioRef.current) {
+      audioRef.current.volume = v;
+    }
+  };
+
+  // Sync audio element volume when audioRef or volume changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   // Play/pause
   const togglePlay = async () => {
@@ -60,12 +80,11 @@ export default function AudioPlayer(): React.ReactElement {
     audio.currentTime = pct * (audio.duration || 0);
   };
 
-  // Setup analyser and draw waveform
+  // Setup analyser and draw waveform — run once on mount
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return; // guard: audio must exist
 
-    // create audio context and nodes, safe because audio is non-null here
     function setupAudioContext(mediaEl: HTMLAudioElement) {
       if (audioCtxRef.current) return;
 
@@ -121,7 +140,6 @@ export default function AudioPlayer(): React.ReactElement {
     window.addEventListener("resize", onResize);
 
     const draw = () => {
-      // request next frame early to keep loop alive even if analyser not ready
       if (!analyser || !ctx2d || !canvas) {
         rafRef.current = requestAnimationFrame(draw);
         return;
@@ -186,7 +204,7 @@ export default function AudioPlayer(): React.ReactElement {
         // ignore
       }
     };
-  }, []); // run once on mount
+  }, []); // run only once on mount
 
   // time / progress updates
   useEffect(() => {
@@ -206,6 +224,8 @@ export default function AudioPlayer(): React.ReactElement {
 
     const onLoaded = () => {
       setDuration(audio.duration || 0);
+      // ensure initial volume is set when metadata loaded
+      audio.volume = volume;
     };
 
     audio.addEventListener("timeupdate", onTime);
@@ -216,7 +236,7 @@ export default function AudioPlayer(): React.ReactElement {
       audio.removeEventListener("timeupdate", onTime);
       audio.removeEventListener("loadedmetadata", onLoaded);
     };
-  }, [isPlaying]);
+  }, [isPlaying, volume]);
 
   return (
     <div className="audio-box" role="region" aria-label="Audio player">
@@ -248,6 +268,19 @@ export default function AudioPlayer(): React.ReactElement {
           <div className="time-left">{fmt(current)}</div>
           <div className="time-right">{fmt(duration)}</div>
         </div>
+      </div>
+
+      <div className="volume-box" aria-label="Volume control">
+        <input
+          className="volume-slider"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={changeVolume}
+          aria-label="Volume"
+        />
       </div>
 
       <audio ref={audioRef} src="/smaragdove-nebo.mp3" preload="metadata" />
