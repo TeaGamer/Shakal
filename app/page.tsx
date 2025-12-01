@@ -103,8 +103,15 @@ All up to you
               </div>
             </div>
           </main> 
+          <a href="/about" className="floating-mytea" aria-label="Open About">
+            <img src="/MyTea.png" alt="MyTea" />
+          </a>
         </div>
       </body>
     </html>
   );
 }
+
+// Floating button pinned bottom-left (stays visible while scrolling)
+// Rendered here so it's present on the main page
+// The CSS class `floating-mytea` is declared in `app/global.css`.

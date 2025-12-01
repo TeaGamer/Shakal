@@ -112,6 +112,40 @@ header {
   margin-bottom: 20px;      /* відступ між логотипом і блоком */
 }
 
+/* ---------- center-card image (MyTea) ---------- */
+.center-card-nav{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px; /* відступ під картинкою */
+}
+.center-card-nav-img{
+  /* Розмір фото-кнопки: змінюйте `width` тут, щоб коригувати розмір кнопки в центр-картці */
+  width:100px;         /* фіксована ширина для запобігання збільшенню картки */
+  max-width:none;      /* вимикаємо відсоткове обмеження, щоб ширина була точною */
+  height:auto;
+  object-fit:contain;
+  display:block;
+}
+
+/* about page back image */
+.about-header{ position: relative; padding: 12px 0 0 0; }
+.about-back-link{ display:block; }
+.about-back-img{
+  /* Розмір кнопки-повернення на сторінці about: редагуйте `width` тут */
+  width:48px;
+  height:auto;
+  position:absolute;
+  left:12px;
+  top:8px;
+}
+
+@media (max-width:600px){
+  /* Мобільний: найменша кнопка */
+  .center-card-nav-img{ width:64px; max-width:none; }
+  .about-back-img{ width:40px; left:8px; top:6px; }
+}
+
 /* ---------- Audio Player styles ---------- */
 
 /* container */
@@ -191,11 +225,42 @@ header {
 }
 
 /* small screens */
-@media (max-width:700px){
+@media (min-width:601px) and (max-width:700px){
+  /* Невеликі екрани: середній розмір кнопки */
   .audio-btn{ width:54px; height:54px; }
-  .wave-wrapper{ height:36px; }
+  .center-card-nav-img{ width:80px; max-width:none; }
   .wave-wrapper canvas{ height:36px; }
   .audio-box{ gap:12px; padding:10px 12px; }
+}
+
+/* ---------- Buton to next page (bottom-left) ---------- */
+.floating-mytea{
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  display: inline-block;
+  /* фон кнопки — змінюй це значення на будь-який колір (hex / rgb / rgba) */
+  background: rgba(255,255,255,0.9); /* білий майже непрозорий */
+  padding: 8px;                      /* відступ навколо картинки, щоб фон був видимий */
+  border-radius: 12px;               /* скруглення кутів фону */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+}
+.floating-mytea img{
+  /* Розмір плаваючої кнопки: змінюйте width тут */
+  width: 100px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+.floating-mytea:hover{
+  transform: translateY(-4px);
+  transition: transform .15s ease;
+}
+
+@media (max-width:600px){
+  .floating-mytea{ left: 8px; bottom: 8px; }
+  .floating-mytea img{ width: 64px; }
 }
 
 /* ---------- Volume Look ---------- */

@@ -71,14 +71,57 @@ export default function AudioPlayer(): React.ReactElement {
   };
 
   // Seek when clicking on progress bar
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Seeking / scrubbing (support drag)
+  const isSeekingRef = useRef(false);
+
+  const doSeekFromClientX = (clientX: number, container: HTMLDivElement | null) => {
     const audio = audioRef.current;
-    if (!audio) return;
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-    const x = e.clientX - rect.left;
+    if (!audio || !container) return;
+    const rect = container.getBoundingClientRect();
+    const x = clientX - rect.left;
     const pct = Math.max(0, Math.min(1, x / rect.width));
-    audio.currentTime = pct * (audio.duration || 0);
+    const targetTime = pct * (audio.duration || 0);
+    audio.currentTime = targetTime;
+    // update UI immediately
+    setProgress((audio.duration && audio.duration > 0) ? (targetTime / audio.duration) * 100 : 0);
+    setCurrent(targetTime);
   };
+
+  // start dragging (pointerdown)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const container = e.currentTarget as HTMLDivElement;
+    // capture pointer to continue receiving events
+    try { container.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+    isSeekingRef.current = true;
+    doSeekFromClientX(e.clientX, container);
+  };
+
+  // move while dragging
+  useEffect(() => {
+    const onPointerMove = (ev: PointerEvent) => {
+      if (!isSeekingRef.current) return;
+      const wrapper = canvasRef.current?.parentElement as HTMLDivElement | null;
+      if (!wrapper) return;
+      doSeekFromClientX(ev.clientX, wrapper);
+    };
+
+    const onPointerUp = (ev: PointerEvent) => {
+      if (!isSeekingRef.current) return;
+      isSeekingRef.current = false;
+      const wrapper = canvasRef.current?.parentElement as HTMLDivElement | null;
+      if (wrapper) {
+        try { wrapper.releasePointerCapture((ev as any).pointerId); } catch (err) { /* ignore */ }
+      }
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, []);
 
   // Setup analyser and draw waveform — run once on mount
   useEffect(() => {
@@ -259,7 +302,7 @@ export default function AudioPlayer(): React.ReactElement {
       </button>
 
       <div className="audio-controls">
-        <div className="wave-wrapper" onClick={handleSeek} style={{ cursor: "pointer" }}>
+        <div className="wave-wrapper" onPointerDown={handlePointerDown} style={{ cursor: "pointer" }}>
           <canvas ref={canvasRef} />
           <div className="progress-overlay" style={{ width: `${progress}%` }} aria-hidden />
         </div>
@@ -283,7 +326,7 @@ export default function AudioPlayer(): React.ReactElement {
         />
       </div>
 
-      <audio ref={audioRef} src="/smaragdove-nebo.mp3" preload="metadata" />
+      <audio ref={audioRef} src="/smaragdove-nebo.mp3" preload="metadata" /> 
     </div>
   );
 }
