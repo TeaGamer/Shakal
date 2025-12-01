@@ -1,59 +1,124 @@
 /* app/global.css */
 
-/* кольори */
-:root {
-  --pantone-7547: #1E2D34; /* фон */
+/* CSS змінні для світлої/темної теми */
+:root,
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: rgba(30, 30, 30, 0.95);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: rgba(245, 245, 245, 0.95);
+  --text-primary: #000000;
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --border-light: rgba(0, 0, 0, 0.08);
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* базові скидання */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body, #__next { height: 100%; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-/* фон додатку */
+html, body {
+  height: 100%;
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+body {
+  background: var(--bg-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Основний контейнер */
 .app-bg {
-  background: var(--pantone-7547);
+  background: var(--bg-primary);
   min-height: 100vh;
-  width: 100vw;               /* <-- гарантія покриття по ширині */
-  box-sizing: border-box;     /* щоб padding не "виривав" блок */
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 24px;
+  transition: background 0.3s ease;
 }
 
-/* обгортка центру (щоб вирівнювати) */
+/* Центральна картка — з фоновим зображенням */
 .center-wrapper {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 50%, #229954 100%);
+  background-attachment: fixed;
+  position: relative;
 }
 
-/* сам "квадрат" — тут background = напівпрозорий (50%) */
 .center-card {
-  width: min(1000px, 92vw);   /* ширина з обмеженням */
-  /* дозволяємо картці підлаштовуватись під висоту тексту */
-  height: auto;
-  border-radius: 20px;
-  background: rgba(242, 243, 238, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.08);
-
-  /* важливо: блочний макет, внутрішні відступи */
-  display: block;
-  padding: 28px;
+  width: 90%;
+  max-width: 800px;
+  min-height: 100vh;
+  background: rgba(30, 30, 30, 1);
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
   box-sizing: border-box;
+  display: block;
+  transition: background 0.3s ease;
+  margin: 20px;
+}
 
-  /* якщо контент дуже довгий — зробимо внутрішній скрол */
-  overflow: auto;
+[data-theme="light"] .center-card {
+  background: rgba(255, 255, 255, 1);
+}
+
+@media (max-width: 600px) {
+  .center-card {
+    padding: 20px;
+  }
+}
+
+/* Розділи всередині */
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  scroll-margin-top: 0;
+}
+
+.section h2 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section p {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 800px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-secondary);
 }
 /* плейсхолдер всередині */
 .center-placeholder {
   text-align: center;
-  color: rgba(0,0,0,0.85); /* текст темний, бо фон панелі світлий напівпрозорий */
+  color: var(--text-secondary);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
@@ -67,203 +132,353 @@ html, body, #__next { height: 100%; }
 .center-card-inner h1 {
   font-size: 48px;
   margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .center-card-inner p {
-  font-size: 24px;
+  font-size: 18px;
   line-height: 1.4;
+  color: var(--text-secondary);
 }
 
-@media (max-width: 600px) {
-  .center-card {
-    border-radius: 14px;
-    padding: 16px;
+/* ========== ЗАКРІПЛЕНІ КНОПКИ ========== */
+
+/* Кнопка перемикання теми (верхня ліва) */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--text-primary);
+  color: var(--text-primary);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(43, 156, 255, 0.6);
+}
+
+/* Навігація справа */
+.side-nav {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-btn {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--text-primary);
+}
+
+.nav-btn:hover {
+  transform: translateX(-8px);
+  box-shadow: 0 0 20px rgba(43, 156, 255, 0.6);
+  opacity: 0.8;
+}
+
+.nav-home {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 700;
+  border: 2px solid var(--text-primary);
+}
+
+.nav-home:hover {
+  opacity: 0.7;
+}
+
+.nav-epoch {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary);
+}
+
+.nav-epoch:hover {
+  opacity: 0.7;
+}
+
+.nav-about {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary);
+}
+
+.nav-about:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .side-nav {
+    right: 8px;
+    gap: 8px;
+  }
+
+  .nav-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
   }
 }
 
+/* ========== ЗАГОЛОВОК ========== */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+
 .top-logo {
-  width: 300px;             /* розмір лого */
+  width: 250px;
   height: auto;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
 }
 
 @media (max-width: 600px) {
   .top-logo {
-    width: 140px;
-    margin-top: 24px;
+    width: 120px;
   }
 }
 
+/* ========== ТЕКСТИ ========== */
 .lyrics {
   white-space: pre-line;
-  font-size: 24px;
-  line-height: 1.4;
+  font-size: 18px;
+  line-height: 1.6;
   margin-bottom: 20px;
-  text-align: left; /* або center, якщо хочеш */
+  text-align: left;
+  color: var(--text-secondary);
 }
 
-
-header {
-  width: 100%;
+/* ========== НАВІГАЦІЙНІ ЕЛЕМЕНТИ В КАРТЦІ ========== */
+.center-card-nav {
   display: flex;
-  justify-content: center; /* центр логотипа по горизонталі */
   align-items: center;
-  padding-top: 40px;        /* відступ зверху */
-  margin-bottom: 20px;      /* відступ між логотипом і блоком */
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-/* ---------- center-card image (MyTea) ---------- */
-.center-card-nav{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px; /* відступ під картинкою */
-}
-.center-card-nav-img{
-  /* Розмір фото-кнопки: змінюйте `width` тут, щоб коригувати розмір кнопки в центр-картці */
-  width:100px;         /* фіксована ширина для запобігання збільшенню картки */
-  max-width:none;      /* вимикаємо відсоткове обмеження, щоб ширина була точною */
-  height:auto;
-  object-fit:contain;
-  display:block;
+.center-card-nav-img {
+  width: 100px;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 /* about page back image */
-.about-header{ position: relative; padding: 12px 0 0 0; }
-.about-back-link{ display:block; }
-.about-back-img{
-  /* Розмір кнопки-повернення на сторінці about: редагуйте `width` тут */
-  width:48px;
-  height:auto;
-  position:absolute;
-  left:12px;
-  top:8px;
+.about-header {
+  position: relative;
+  padding: 12px 0 0 0;
 }
 
-@media (max-width:600px){
-  /* Мобільний: найменша кнопка */
-  .center-card-nav-img{ width:64px; max-width:none; }
-  .about-back-img{ width:40px; left:8px; top:6px; }
+.about-back-link {
+  display: block;
 }
 
-/* ---------- Audio Player styles ---------- */
+.about-back-img {
+  width: 48px;
+  height: auto;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+}
 
+@media (max-width: 600px) {
+  .center-card-nav-img {
+    width: 64px;
+    max-width: none;
+  }
+
+  .about-back-img {
+    width: 40px;
+    left: 8px;
+    top: 6px;
+  }
+}
+
+/* ========== АУДІОПЛЕЄР ========== */
 /* container */
-.audio-box{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  background: rgba(0,0,0,0.06);
-  padding:14px 18px;
-  border-radius:14px;
+.audio-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 14px 18px;
+  border-radius: 14px;
   backdrop-filter: blur(2px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-  max-width:920px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  max-width: 920px;
   width: min(92%, 920px);
+  margin: 20px auto 0;
 }
 
 /* button */
-.audio-btn{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  background: linear-gradient(180deg,#2b9cff,#1e90ff);
-  border:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  box-shadow: 0 8px 24px rgba(30,144,255,0.18);
-  padding:0;
+.audio-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #2b9cff, #1e90ff);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(30, 144, 255, 0.18);
+  padding: 0;
+  transition: transform 0.2s ease;
 }
-.audio-btn svg { display:block; width:28px; height:28px; }
+
+.audio-btn:hover {
+  transform: scale(1.05);
+}
+
+.audio-btn svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
 
 /* controls column */
-.audio-controls{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+.audio-controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* wave wrapper: canvas sits behind, overlay shows progress */
-.wave-wrapper{
-  position:relative;
-  width:100%;
-  height:48px;
-  border-radius:8px;
-  overflow:hidden;
-  background: rgba(255,255,255,0.03);
+.wave-wrapper {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
 }
 
 /* canvas will be sized by script; make it take full wrapper */
-.wave-wrapper canvas{
-  display:block;
-  width:100%;
-  height:48px;
+.wave-wrapper canvas {
+  display: block;
+  width: 100%;
+  height: 48px;
 }
 
 /* progress overlay (colored) sits on top (left->right) */
-.progress-overlay{
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:0%;
-  background: linear-gradient(90deg, rgba(43,156,255,0.5), rgba(43,156,255,0.4));
-  pointer-events:none;
-  z-index:2;
+.progress-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(43, 156, 255, 0.5), rgba(43, 156, 255, 0.4));
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* times row */
-.time-row{
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  color: rgba(255,255,255,0.85);
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
   padding: 0 6px;
 }
 
-/* small screens */
-@media (min-width:601px) and (max-width:700px){
-  /* Невеликі екрани: середній розмір кнопки */
-  .audio-btn{ width:54px; height:54px; }
-  .center-card-nav-img{ width:80px; max-width:none; }
-  .wave-wrapper canvas{ height:36px; }
-  .audio-box{ gap:12px; padding:10px 12px; }
+@media (max-width: 700px) {
+  .audio-btn {
+    width: 54px;
+    height: 54px;
+  }
+
+  .wave-wrapper {
+    height: 36px;
+  }
+
+  .wave-wrapper canvas {
+    height: 36px;
+  }
+
+  .audio-box {
+    gap: 12px;
+    padding: 10px 12px;
+  }
 }
 
-/* ---------- Buton to next page (bottom-left) ---------- */
-.floating-mytea{
+/* ========== ПЛАВАЮЧА КНОПКА (LEGACY) ========== */
+.floating-mytea {
   position: fixed;
   left: 16px;
   bottom: 16px;
-  z-index: 9999;
+  z-index: 900;
   display: inline-block;
-  /* фон кнопки — змінюй це значення на будь-який колір (hex / rgb / rgba) */
-  background: rgba(255,255,255,0.9); /* білий майже непрозорий */
-  padding: 8px;                      /* відступ навколо картинки, щоб фон був видимий */
-  border-radius: 12px;               /* скруглення кутів фону */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
-.floating-mytea img{
-  /* Розмір плаваючої кнопки: змінюйте width тут */
+
+.floating-mytea:hover {
+  transform: translateY(-4px);
+}
+
+.floating-mytea img {
   width: 100px;
   height: auto;
   display: block;
   object-fit: contain;
 }
-.floating-mytea:hover{
-  transform: translateY(-4px);
-  transition: transform .15s ease;
+
+@media (max-width: 600px) {
+  .floating-mytea {
+    left: 8px;
+    bottom: 8px;
+  }
+
+  .floating-mytea img {
+    width: 64px;
+  }
 }
 
-@media (max-width:600px){
-  .floating-mytea{ left: 8px; bottom: 8px; }
-  .floating-mytea img{ width: 64px; }
-}
-
-/* ---------- Volume Look ---------- */
+/* ========== VOLUME CONTROL ========== */
 /* Volume container */
 .volume-box {
   display: flex;
@@ -277,7 +492,7 @@ header {
 .volume-slider {
   width: 100%;
   height: 6px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 4px;
   appearance: none;
   cursor: pointer;
@@ -286,12 +501,13 @@ header {
 /* Track */
 .volume-slider::-webkit-slider-runnable-track {
   height: 6px;
-  background: rgba(43,156,255,0.35);
+  background: rgba(43, 156, 255, 0.35);
   border-radius: 4px;
 }
+
 .volume-slider::-moz-range-track {
   height: 6px;
-  background: rgba(43,156,255,0.35);
+  background: rgba(43, 156, 255, 0.35);
   border-radius: 4px;
 }
 
@@ -305,8 +521,9 @@ header {
   border: 2px solid #fff;
   margin-top: -4px;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(43,156,255,0.6);
+  box-shadow: 0 0 6px rgba(43, 156, 255, 0.6);
 }
+
 .volume-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;

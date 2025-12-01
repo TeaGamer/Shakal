@@ -15,14 +15,13 @@ export default function AudioPlayer(): React.ReactElement {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const volumeRef = useRef(1); // зберігаємо гучність без перепрацювання
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0); // 0..100
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
-
-  // Гучність (0–1)
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(1); // для UI відображення
 
   // format seconds -> mm:ss
   const fmt = (s: number) => {
@@ -36,37 +35,47 @@ export default function AudioPlayer(): React.ReactElement {
     const v = Number(e.target.value);
     setVolume(v);
 
-    // Якщо елемент існує зараз — змінюємо негайно
+    // Змінюємо гучність негайно
     if (audioRef.current) {
       audioRef.current.volume = v;
     }
   };
 
-  // Sync audio element volume when audioRef or volume changes
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
   // Play/pause
   const togglePlay = async () => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) {
+      console.error("❌ Audio element not found");
+      return;
+    }
+    
+    console.log("🔊 Audio element found");
+    console.log("📄 Audio src:", audio.src);
+    console.log("⏱️ Duration:", audio.duration);
+    console.log("📊 Ready state:", audio.readyState, "(0=HAVE_NOTHING, 1=HAVE_METADATA, 2=HAVE_CURRENT_DATA, 3=HAVE_FUTURE_DATA, 4=HAVE_ENOUGH_DATA)");
+    console.log("🎵 Network state:", audio.networkState, "(0=NETWORK_EMPTY, 1=NETWORK_IDLE, 2=NETWORK_LOADING, 3=NETWORK_NO_SOURCE)");
+    
     try {
       if (!isPlaying) {
+        console.log("▶️ Attempting to play...");
         // resume audio context on user gesture if suspended
         if (audioCtxRef.current?.state === "suspended") {
+          console.log("🔓 Resuming AudioContext...");
           await audioCtxRef.current.resume();
         }
-        await audio.play();
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          console.log("✅ Play succeeded");
+        }
         setIsPlaying(true);
       } else {
+        console.log("⏸️ Pausing...");
         audio.pause();
         setIsPlaying(false);
       }
     } catch (e) {
-      console.warn("Audio play failed:", e);
+      console.error("❌ Audio play failed:", e);
     }
   };
 
@@ -267,19 +276,26 @@ export default function AudioPlayer(): React.ReactElement {
 
     const onLoaded = () => {
       setDuration(audio.duration || 0);
+      console.log("Audio loaded, duration:", audio.duration);
       // ensure initial volume is set when metadata loaded
-      audio.volume = volume;
+      audio.volume = audioRef.current?.volume || 1;
+    };
+
+    const onError = (err: Event) => {
+      console.error("Audio error:", audio.error);
     };
 
     audio.addEventListener("timeupdate", onTime);
     audio.addEventListener("loadedmetadata", onLoaded);
+    audio.addEventListener("error", onError);
     audio.addEventListener("ended", () => setIsPlaying(false));
 
     return () => {
       audio.removeEventListener("timeupdate", onTime);
       audio.removeEventListener("loadedmetadata", onLoaded);
+      audio.removeEventListener("error", onError);
     };
-  }, [isPlaying, volume]);
+  }, []);
 
   return (
     <div className="audio-box" role="region" aria-label="Audio player">
@@ -326,7 +342,12 @@ export default function AudioPlayer(): React.ReactElement {
         />
       </div>
 
-      <audio ref={audioRef} src="/smaragdove-nebo.mp3" preload="metadata" /> 
+      <audio 
+        ref={audioRef} 
+        src="/smaragdove-nebo.mp3" 
+        preload="metadata" 
+        crossOrigin="anonymous"
+      /> 
     </div>
   );
 }
