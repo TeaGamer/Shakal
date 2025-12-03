@@ -38,60 +38,54 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         aria-label="Toggle theme"
         title={theme === "dark" ? "Light Mode" : "Dark Mode"}
       >
-        {theme === "dark" ? "☀️" : "🌙"}
+        {theme === "dark" ? "🌙" : "☀️"}
       </button>
 
       {/* 8 кнопок навігації (справа) */}
       <nav className="side-nav">
-        <button
-          className="nav-btn nav-home"
-          onClick={() => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" })}
-          title="Головна"
-        >
-          Головна
-        </button>
+ <button
+  className="nav-btn nav-home"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  title="Головна"
+>
+  Головна
+</button>
         <button
           className="nav-btn nav-epoch"
           onClick={() => document.getElementById("epoch-1")?.scrollIntoView({ behavior: "smooth" })}
           title="Епоха 1"
         >
-          Епоха 1
+          КНЯЖА УКРАЇНА
         </button>
         <button
           className="nav-btn nav-epoch"
           onClick={() => document.getElementById("epoch-2")?.scrollIntoView({ behavior: "smooth" })}
           title="Епоха 2"
         >
-          Епоха 2
+          КОЗАЧЧИНА
         </button>
         <button
           className="nav-btn nav-epoch"
           onClick={() => document.getElementById("epoch-3")?.scrollIntoView({ behavior: "smooth" })}
           title="Епоха 3"
         >
-          Епоха 3
+          ВИЗВОЛЬНІ ЗМАГАННЯ
         </button>
         <button
           className="nav-btn nav-epoch"
           onClick={() => document.getElementById("epoch-4")?.scrollIntoView({ behavior: "smooth" })}
           title="Епоха 4"
         >
-          Епоха 4
+          УПА
         </button>
         <button
           className="nav-btn nav-epoch"
           onClick={() => document.getElementById("epoch-5")?.scrollIntoView({ behavior: "smooth" })}
           title="Епоха 5"
         >
-          Епоха 5
+          ЗСУ
         </button>
-        <button
-          className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-6")?.scrollIntoView({ behavior: "smooth" })}
-          title="Епоха 6"
-        >
-          Епоха 6
-        </button>
+
         <button
           className="nav-btn nav-about"
           onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
