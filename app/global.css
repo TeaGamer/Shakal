@@ -1,7 +1,13 @@
 /* app/global.css */
 
 /* CSS змінні для світлої/темної теми */
-:root,
+:root {
+  --side-width: 230px;    /* ширина правої панелі (підлаштуй під потрібну) */
+  --page-max-width: 1150px; /* фіксована ширина центральної картки на великих екранах */
+  --gutter: 24px;
+  --card-shift: 90px;
+}
+
 [data-theme="dark"] {
   --bg-primary: #000000;
   --bg-secondary: rgba(30, 30, 30, 0.95);
@@ -67,7 +73,7 @@ body {
 
 .center-card {
   width: 100%;
-  max-width: 1150px;
+  max-width: var(--page-max-width);
   min-height: 100vh;
   background: rgba(30, 30, 30, 1);
   border-radius: 8px;
@@ -77,8 +83,9 @@ body {
   box-sizing: border-box;
   display: block;
   transition: background 0.3s ease;
-  margin: 20px;
-  margin-right: 150px; /* Скільки відступаємо від ПРАВА */
+  margin: 20px auto;
+  margin-right: calc(var(--side-width) + var(--gutter)); /* Скільки відступаємо від ПРАВА */
+  margin-left: var(--card-shift);
 }
 
 [data-theme="light"] .center-card {
