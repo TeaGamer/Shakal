@@ -37,6 +37,24 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
+  useEffect(() => {
+  if (!mounted) return;
+
+  const sources = [
+    "/Epoch1.png",
+    "/Epoch2.png",
+    "/Epoch3.png",
+    "/Epoch4.png",
+    "/Epoch5.png",
+  ];
+
+  sources.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+}, [mounted]);
+
+
   // 🔥 ОБНОВЛЕННЯ фону при скролі (IntersectionObserver)
   useEffect(() => {
     if (!mounted) return;
