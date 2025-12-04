@@ -52,15 +52,14 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     ];
 
     const elements = defs
-      .map((d) => {
-        const el = document.getElementById(d.id);
-        return el ? { el, epoch: d.epoch } : null;
-      })
-      .filter(
-        (x): x is { el: Element; epoch: Epoch } => x !== null
-      );
+  .map((d) => {
+    const el = document.getElementById(d.id);
+    return el ? { el, epoch: d.epoch } : null;
+  })
+  .filter(
+    (x): x is { el: HTMLElement; epoch: Epoch } => x !== null
+  );
 
-    if (!elements.length) return;
 
     let currentEpoch: Epoch | null = null;
 
