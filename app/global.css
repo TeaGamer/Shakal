@@ -66,10 +66,51 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 50%, #229954 100%);
+
+  /* прибираємо старий градієнт */
+  /* background: linear-gradient(135deg, #2ecc71 0%, #27ae60 50%, #229954 100%); */
+
   background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
   position: relative;
+  transition: background-image 0.4s ease, background-color 0.4s ease;
 }
+
+
+ /* Задній фон */
+
+/* Княжа Україна */
+/* ===== ФОНИ ЗА ЕПОХАМИ ===== */
+
+[data-epoch="home"] .center-wrapper {
+  background-image: url("/Epoch1.png");
+}
+
+[data-epoch="epoch-1"] .center-wrapper {
+  background-image: url("/Epoch1.png");
+}
+
+[data-epoch="epoch-2"] .center-wrapper {
+  background-image: url("/Epoch2.png");
+}
+
+[data-epoch="epoch-3"] .center-wrapper {
+  background-image: url("/Epoch3.png");
+}
+
+[data-epoch="epoch-4"] .center-wrapper {
+  background-image: url("/Epoch4.png");
+}
+
+[data-epoch="epoch-5"] .center-wrapper,
+[data-epoch="about"] .center-wrapper {
+  background-image: url("/Epoch5.png");
+}
+
+
 
 .center-card {
   width: 100%;

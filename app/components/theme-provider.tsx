@@ -5,9 +5,14 @@ import React, { ReactNode, useState, useEffect } from "react";
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [mounted, setMounted] = useState(false);
+  const [epoch, setEpoch] = useState<
+   | "epoch1" | "epoch2" | "epoch3" | "epoch4" | "epoch5"
+>("epoch1")
+
 
   // Завантажити тему з localStorage на клієнті
   useEffect(() => {
+    
     const saved = localStorage.getItem("theme") as "light" | "dark" | null;
     if (saved) {
       setTheme(saved);
@@ -16,6 +21,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       setTheme("dark");
       document.documentElement.setAttribute("data-theme", "dark");
     }
+    document.documentElement.setAttribute("data-epoch", "home");
     setMounted(true);
   }, []);
 
@@ -45,42 +51,51 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       <nav className="side-nav">
  <button
   className="nav-btn nav-home"
-  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  onClick={() => {
+  document.documentElement.setAttribute("data-epoch", "home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}}
+
   title="Головна"
 >
   Головна
 </button>
         <button
           className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-1")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => {
+  document.documentElement.setAttribute("data-epoch", "epoch-1");
+  document.getElementById("epoch-1")?.scrollIntoView({ behavior: "smooth" });
+}}
+
           title="Епоха 1"
         >
           КНЯЖА УКРАЇНА
         </button>
         <button
           className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-2")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => {document.documentElement.setAttribute("data-epoch", "epoch-2");document.getElementById("epoch-2")?.scrollIntoView({ behavior: "smooth" });}}
           title="Епоха 2"
         >
           КОЗАЧЧИНА
         </button>
         <button
           className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-3")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => {document.documentElement.setAttribute("data-epoch", "epoch-3");document.getElementById("epoch-3")?.scrollIntoView({ behavior: "smooth" });}}
+
           title="Епоха 3"
         >
           ВИЗВОЛЬНІ ЗМАГАННЯ
         </button>
         <button
           className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-4")?.scrollIntoView({ behavior: "smooth" })}
+  onClick={() => {document.documentElement.setAttribute("data-epoch", "epoch-4");document.getElementById("epoch-4")?.scrollIntoView({ behavior: "smooth" });}}
           title="Епоха 4"
         >
           УПА
         </button>
         <button
           className="nav-btn nav-epoch"
-          onClick={() => document.getElementById("epoch-5")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => {document.documentElement.setAttribute("data-epoch", "epoch-5");document.getElementById("epoch-5")?.scrollIntoView({ behavior: "smooth" });}}
           title="Епоха 5"
         >
           ЗСУ
@@ -88,7 +103,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 
         <button
           className="nav-btn nav-about"
-          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+         onClick={() => {document.documentElement.setAttribute("data-epoch", "about");document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });}}
           title="Про команду"
         >
           Про команду
