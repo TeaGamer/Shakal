@@ -47,6 +47,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Приховуємо скролбар для всього body */
+body::-webkit-scrollbar {
+  display: none;
+}
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* Основний контейнер */
 .app-bg {
   background: var(--bg-primary);
@@ -127,6 +136,16 @@ body {
   margin: 20px auto;
   margin-right: calc(var(--side-width) + var(--gutter)); /* Скільки відступаємо від ПРАВА */
   margin-left: var(--card-shift);
+  overflow-x: hidden; /* прибираємо горизонтальний скрол */
+}
+
+/* Приховуємо скролбар для center-card */
+.center-card::-webkit-scrollbar {
+  display: none;
+}
+.center-card {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 [data-theme="light"] .center-card {
@@ -580,4 +599,362 @@ header {
   background: #2b9cff;
   border: 2px solid #fff;
   cursor: pointer;
+}
+
+/* ========== АДАПТИВ ДЛЯ ВСЬОГО САЙТУ ========== */
+
+/* Великі екрани (1200px+) - БАЗОВІ СТИЛІ */
+@media (min-width: 1200px) {
+  .center-card {
+    max-width: var(--page-max-width);
+    padding: 40px;
+    margin-left: var(--card-shift);
+    margin-right: calc(var(--side-width) + var(--gutter));
+  }
+
+  .section h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .top-logo {
+    width: 250px;
+  }
+
+  .side-nav {
+    right: 16px;
+  }
+
+  .nav-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Екрани 992px - 1199px (вузькі ноутбуки) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  :root {
+    --page-max-width: 900px;
+    --side-width: 180px;
+    --card-shift: 60px;
+  }
+
+  .center-card {
+    padding: 35px;
+    margin-left: 60px;
+    margin-right: calc(180px + 20px);
+  }
+
+  .section h2 {
+    font-size: 40px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 16px;
+  }
+
+  .top-logo {
+    width: 200px;
+  }
+
+  .nav-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+/* Таблети (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  :root {
+    --page-max-width: 100%;
+    --side-width: 0;
+    --card-shift: 0;
+    --gutter: 0;
+  }
+
+  .center-card {
+    max-width: 100%;
+    padding: 30px 20px;
+    margin: 20px auto;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .section h2 {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .section {
+    padding: 30px 0;
+  }
+
+  .top-logo {
+    width: 180px;
+  }
+
+  .side-nav {
+    right: 10px;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .theme-toggle {
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
+  }
+}
+
+/* Великі мобільні (600px - 767px) */
+@media (min-width: 600px) and (max-width: 767px) {
+  :root {
+    --page-max-width: 100%;
+    --side-width: 0;
+    --card-shift: 0;
+  }
+
+  .center-card {
+    max-width: 100%;
+    padding: 20px 15px;
+    margin: 15px auto;
+  }
+
+  .section h2 {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .section {
+    padding: 25px 0;
+    min-height: auto;
+  }
+
+  .center-card-inner h1 {
+    font-size: 32px;
+  }
+
+  .center-card-inner p {
+    font-size: 14px;
+  }
+
+  .top-logo {
+    width: 140px;
+  }
+
+  .side-nav {
+    right: 8px;
+    gap: 8px;
+  }
+
+  .nav-btn {
+    padding: 9px 10px;
+    font-size: 10px;
+  }
+
+  .theme-toggle {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  header {
+    padding: 15px 0;
+    margin-bottom: 15px;
+  }
+}
+
+/* Мобільні телефони (480px - 599px) */
+@media (min-width: 480px) and (max-width: 599px) {
+  :root {
+    --page-max-width: 100%;
+  }
+
+  .center-card {
+    max-width: 100%;
+    padding: 15px 12px;
+    margin: 12px auto;
+    border-radius: 6px;
+  }
+
+  .section h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .section {
+    padding: 20px 0;
+    min-height: auto;
+  }
+
+  .center-card-inner h1 {
+    font-size: 28px;
+  }
+
+  .center-card-inner p {
+    font-size: 13px;
+  }
+
+  .top-logo {
+    width: 120px;
+  }
+
+  .side-nav {
+    right: 8px;
+    gap: 6px;
+  }
+
+  .nav-btn {
+    padding: 8px 8px;
+    font-size: 9px;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    top: 12px;
+    left: 12px;
+  }
+
+  header {
+    padding: 12px 0;
+    margin-bottom: 12px;
+  }
+
+  .lyrics {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .center-card-nav-img {
+    width: 70px;
+  }
+}
+
+/* Маленькі мобільні (менше 480px) */
+@media (max-width: 479px) {
+  :root {
+    --page-max-width: 100%;
+  }
+
+  .center-card {
+    max-width: 100%;
+    padding: 12px 10px;
+    margin: 10px auto;
+    border-radius: 6px;
+  }
+
+  .section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .section p,
+  .lyrics {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .section {
+    padding: 15px 0;
+    min-height: auto;
+  }
+
+  .center-card-inner h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .center-card-inner p {
+    font-size: 12px;
+  }
+
+  .top-logo {
+    width: 100px;
+  }
+
+  .side-nav {
+    right: 6px;
+    gap: 6px;
+  }
+
+  .nav-btn {
+    padding: 7px 6px;
+    font-size: 8px;
+    border-radius: 20px;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+    top: 10px;
+    left: 10px;
+  }
+
+  header {
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+
+  .lyrics {
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: left;
+  }
+
+  .center-card-nav-img {
+    width: 60px;
+  }
+
+  .about-back-img {
+    width: 35px;
+    left: 8px;
+    top: 6px;
+  }
+
+  .audio-box {
+    width: min(95%, 100%);
+    gap: 10px;
+    padding: 10px 10px;
+  }
+
+  .floating-mytea {
+    left: 6px;
+    bottom: 6px;
+  }
+
+  .floating-mytea img {
+    width: 55px;
+  }
 }
