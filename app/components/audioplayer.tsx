@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from "react";
  * Використано як основа твого останнього коміту. :contentReference[oaicite:1]{index=1}
  */
 
-export default function AudioPlayer(): React.ReactElement {
+export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: string }): React.ReactElement {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -354,7 +354,7 @@ export default function AudioPlayer(): React.ReactElement {
         <input className="volume-slider" type="range" min="0" max="1" step="0.01" value={volume} onChange={changeVolume} aria-label="Volume" />
       </div>
 
-      <audio ref={audioRef} src="/smaragdove-nebo.mp3" preload="metadata" crossOrigin="anonymous" />
+      <audio ref={audioRef} src={audioSrc} preload="metadata" crossOrigin="anonymous" />
     </div>
   );
 }
