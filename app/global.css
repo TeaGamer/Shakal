@@ -207,6 +207,7 @@ body {
   font-size: 18px;
   line-height: 1.4;
   color: var(--text-secondary);
+  text-align: center;
 }
 
 /* ========== ЗАКРІПЛЕНІ КНОПКИ ========== */
@@ -351,6 +352,26 @@ header {
   margin-bottom: 20px;
   text-align: left;
   color: var(--text-secondary);
+}
+
+/* Контейнер для тексту з фотографією */
+.content-with-image {
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.content-with-image img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.content-with-image .lyrics {
+  margin-bottom: 0;
 }
 
 /* ========== НАВІГАЦІЙНІ ЕЛЕМЕНТИ В КАРТЦІ ========== */
