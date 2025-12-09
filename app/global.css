@@ -204,10 +204,11 @@ body {
 }
 
 .center-card-inner p {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.4;
   color: var(--text-secondary);
   text-align: center;
+  
 }
 
 /* ========== ЗАКРІПЛЕНІ КНОПКИ ========== */
@@ -356,18 +357,47 @@ header {
 
 /* Контейнер для тексту з фотографією */
 .content-with-image {
-  display: flex;
-  gap: 25px;
-  align-items: flex-start;
+  display: block;
   margin-bottom: 25px;
 }
 
 .content-with-image img {
-  width: 250px;
+  float: left;
+  margin-right: 25px;
+  margin-bottom: 12px;
+  width: 550px;
   height: auto;
   border-radius: 10px;
-  flex-shrink: 0;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  max-width: 100%;
+}
+
+/* clearfix so parent wraps floated image */
+.content-with-image::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Збільшене зображення для першої епохи */
+.epoch1-img {
+  width: 620px;
+  max-width: 60vw;
+}
+
+@media (max-width: 900px) {
+  .content-with-image img,
+  .epoch1-img {
+    float: none;
+    margin: 0 0 16px 0;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
+
+  .content-with-image {
+    display: block;
+  }
 }
 
 .content-with-image .lyrics {
@@ -978,4 +1008,11 @@ header {
   .floating-mytea img {
     width: 55px;
   }
+}
+
+.Golova {
+  width: 200px;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 10px;
 }
