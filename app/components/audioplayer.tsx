@@ -2,16 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-/**
- * AudioPlayer — оновлена версія
- * - AudioContext створюється тільки на першій user gesture
- * - Додається GainNode для надійного контролю гучності
- * - resume() викликається при gesture (play / slider)
- * - Analyser + canvas залишаються для waveform
- *
- * Використано як основа твого останнього коміту. :contentReference[oaicite:1]{index=1}
- */
-
 export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: string }): React.ReactElement {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -37,7 +27,6 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     return `${mm}:${ss}`;
   };
 
-  // === Audio graph creation (only on user gesture) ===
   function ensureAudioGraph(mediaEl: HTMLAudioElement) {
     if (audioCtxRef.current) return;
 
@@ -62,7 +51,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     gain.gain.value = volumeRef.current ?? 1;
     gainRef.current = gain;
 
-    // source -> analyser -> gain -> destination
+
     source.connect(analyser);
     analyser.connect(gain);
     gain.connect(ctx.destination);
@@ -70,7 +59,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     console.log("Audio graph created, gain:", gain.gain.value);
   }
 
-  // === Play / Pause ===
+  // Початок / пауза
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio) {
@@ -78,7 +67,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
       return;
     }
 
-    // create audio graph on first gesture
+
     ensureAudioGraph(audio);
 
     try {
@@ -91,7 +80,6 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
         console.log("Attempting to play...");
         const p = audio.play();
         if (p !== undefined) await p;
-        // ensure gain reflects UI
         if (gainRef.current && audioCtxRef.current) {
           gainRef.current.gain.setValueAtTime(volumeRef.current, audioCtxRef.current.currentTime);
         } else {
@@ -108,13 +96,13 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     }
   };
 
-  // === Volume change ===
+  // Зміна гучності
   const changeVolume = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = Number(e.target.value);
     setVolume(v);
     volumeRef.current = v;
 
-    // resume context if suspended (user gesture)
+
     if (audioCtxRef.current && audioCtxRef.current.state === "suspended") {
       try {
         await audioCtxRef.current.resume();
@@ -124,7 +112,6 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
       }
     }
 
-    // if graph not created yet, create on slider move
     const audio = audioRef.current;
     if (audio && !audioCtxRef.current) ensureAudioGraph(audio);
 
@@ -139,7 +126,6 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     }
   };
 
-  // === Seeking (same як у тебе) ===
   const isSeekingRef = useRef(false);
   const doSeekFromClientX = (clientX: number, container: HTMLDivElement | null) => {
     const audio = audioRef.current;
@@ -181,7 +167,6 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     };
   }, []);
 
-  // === Canvas / Analyser draw loop (safe if analyser not ready) ===
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -209,14 +194,12 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
   const height = canvas.height / dpr;
   const midY = height / 2;
 
-  // очищаємо
   ctx2d.clearRect(0, 0, width, height);
 
-  // Рендер-заповнювач коли аналайзера немає
   if (!analyser) {
-    // фонова "порожня" смуга
+  
     ctx2d.fillStyle = "rgba(255,255,255,0.02)";
-    const r = 8; // радіус заокруглення
+    const r = 8; 
     ctx2d.beginPath();
     ctx2d.moveTo(r, 0);
     ctx2d.lineTo(width - r, 0);
@@ -230,7 +213,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     ctx2d.closePath();
     ctx2d.fill();
 
-    // тонка центральна лінія (щоб було відчуття "треку")
+    // Лінія по центру (коли звук дригається)
     ctx2d.strokeStyle = "rgba(255,255,255,0.06)";
     ctx2d.lineWidth = 1;
     ctx2d.beginPath();
@@ -238,12 +221,12 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     ctx2d.lineTo(width - 6, midY);
     ctx2d.stroke();
 
-    // залишаємо анімаційний цикл
+  
     rafRef.current = requestAnimationFrame(draw);
     return;
   }
 
-  // Якщо аналайзер є — малюємо реальний waveform
+
   const dataArray = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteTimeDomainData(dataArray);
 
@@ -255,7 +238,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
   const step = Math.max(1, Math.floor(dataArray.length / width));
   let x = 0;
   for (let i = 0; i < dataArray.length; i += step) {
-    const v = dataArray[i] / 128.0; // 0..2
+    const v = dataArray[i] / 128.0; 
     const y = (v * midY) - midY;
     const drawY = midY + y;
     if (i === 0) ctx2d.moveTo(x, drawY);
@@ -290,7 +273,7 @@ export default function AudioPlayer({ audioSrc = "/audio.mp3" }: { audioSrc?: st
     };
   }, []);
 
-  // === Time / progress events ===
+  // час
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;

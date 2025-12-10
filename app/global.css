@@ -1,9 +1,7 @@
-/* app/global.css */
-
 /* CSS змінні для світлої/темної теми */
 :root {
-  --side-width: 230px;    /* ширина правої панелі (підлаштуй під потрібну) */
-  --page-max-width: 1150px; /* фіксована ширина центральної картки на великих екранах */
+  --side-width: 230px;    
+  --page-max-width: 1150px; 
   --gutter: 24px;
   --card-shift: 90px;
 }
@@ -33,6 +31,26 @@
   padding: 0;
 }
 
+/* Посилання */
+a {
+  color: #5ba3ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #7bb8ff;
+  text-decoration: underline;
+}
+
+[data-theme="light"] a {
+  color: #0056b3;
+}
+
+[data-theme="light"] a:hover {
+  color: #004085;
+}
+
 html, body {
   height: 100%;
   color: var(--text-primary);
@@ -52,8 +70,8 @@ body::-webkit-scrollbar {
   display: none;
 }
 body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
 }
 
 /* Основний контейнер */
@@ -76,8 +94,7 @@ body {
   align-items: center;
   justify-content: flex-start;
 
-  /* прибираємо старий градієнт */
-  /* background: linear-gradient(135deg, #2ecc71 0%, #27ae60 50%, #229954 100%); */
+
 
   background-attachment: fixed;
   background-position: center;
@@ -91,8 +108,7 @@ body {
 
  /* Задній фон */
 
-/* Княжа Україна */
-/* ===== ФОНИ ЗА ЕПОХАМИ ===== */
+/* ФОНИ ЗА ЕПОХАМИ */
 
 [data-epoch="home"] .center-wrapper {
   background-image: url("/Epoch1.png");
@@ -134,12 +150,12 @@ body {
   display: block;
   transition: background 0.3s ease;
   margin: 20px auto;
-  margin-right: calc(var(--side-width) + var(--gutter)); /* Скільки відступаємо від ПРАВА */
+  margin-right: calc(var(--side-width) + var(--gutter)); 
   margin-left: var(--card-shift);
-  overflow-x: hidden; /* прибираємо горизонтальний скрол */
+  overflow-x: hidden;
 }
 
-/* Приховуємо скролбар для center-card */
+
 .center-card::-webkit-scrollbar {
   display: none;
 }
@@ -176,14 +192,14 @@ body {
 }
 
 .section p {
-  font-size: 18px;
+  font-size: 18px;  
   line-height: 1.6;
   max-width: 800px;
   text-align: center;
   margin-bottom: 20px;
   color: var(--text-secondary);
 }
-/* плейсхолдер всередині */
+
 .center-placeholder {
   text-align: center;
   color: var(--text-secondary);
@@ -191,14 +207,14 @@ body {
 }
 
 .center-card-inner {
-   width: 100%;         /* ← картка займає всю ширину */
-  text-align: center;  /* ← текст по центру */
+   width: 100%;         
+  text-align: center; 
   display: block;
 }
 
-/* розміри тексту всередині */
+/* Розмір тексту в середині */
 .center-card-inner h1 {
-  font-size: 48px;
+  font-size: 40px;
   margin-bottom: 12px;
   color: var(--text-primary);
 }
@@ -211,9 +227,9 @@ body {
   
 }
 
-/* ========== ЗАКРІПЛЕНІ КНОПКИ ========== */
+/* Кнопки зправа */
 
-/* Кнопка перемикання теми (верхня ліва) */
+/* Кнопка перемикання теми */
 .theme-toggle {
   position: fixed;
   top: 16px;
@@ -239,7 +255,6 @@ body {
   box-shadow: 0 0 20px rgba(43, 156, 255, 0.6);
 }
 
-/* Навігація справа */
 .side-nav {
   position: fixed;
   right: 16px;
@@ -355,7 +370,7 @@ header {
   color: var(--text-secondary);
 }
 
-/* Контейнер для тексту з фотографією */
+
 .content-with-image {
   display: block;
   margin-bottom: 25px;
@@ -372,14 +387,12 @@ header {
   max-width: 100%;
 }
 
-/* clearfix so parent wraps floated image */
 .content-with-image::after {
   content: "";
   display: block;
   clear: both;
 }
 
-/* Збільшене зображення для першої епохи */
 .epoch1-img {
   width: 620px;
   max-width: 60vw;
@@ -420,7 +433,6 @@ header {
   display: block;
 }
 
-/* about page back image */
 .about-header {
   position: relative;
   padding: 12px 0 0 0;
@@ -452,7 +464,7 @@ header {
 }
 
 /* ========== АУДІОПЛЕЄР ========== */
-/* container */
+/* Контейнер */
 .audio-box {
   display: flex;
   align-items: center;
@@ -467,7 +479,7 @@ header {
   margin: 20px auto 0;
 }
 
-/* button */
+/* Кнопка */
 .audio-btn {
   width: 64px;
   height: 64px;
@@ -493,7 +505,7 @@ header {
   height: 28px;
 }
 
-/* controls column */
+/* Контроль звуку */
 .audio-controls {
   flex: 1;
   display: flex;
@@ -501,7 +513,7 @@ header {
   gap: 10px;
 }
 
-/* wave wrapper: canvas sits behind, overlay shows progress */
+/* Волни звуку */
 .wave-wrapper {
   position: relative;
   width: 100%;
@@ -512,14 +524,14 @@ header {
   cursor: pointer;
 }
 
-/* canvas will be sized by script; make it take full wrapper */
+
 .wave-wrapper canvas {
   display: block;
   width: 100%;
   height: 48px;
 }
 
-/* progress overlay (colored) sits on top (left->right) */
+/* Прогрес бар (зліва направо)*/
 .progress-overlay {
   position: absolute;
   left: 0;
@@ -531,7 +543,7 @@ header {
   z-index: 2;
 }
 
-/* times row */
+/* Час мазики*/
 .time-row {
   display: flex;
   justify-content: space-between;
@@ -597,8 +609,8 @@ header {
   }
 }
 
-/* ========== VOLUME CONTROL ========== */
-/* Volume container */
+/* Контроль гучності */
+/* Контейнер гучності */
 .volume-box {
   display: flex;
   align-items: center;
@@ -607,7 +619,7 @@ header {
   padding-left: 8px;
 }
 
-/* Volume slider */
+/* Повзунок гучності */
 .volume-slider {
   width: 100%;
   height: 6px;
@@ -617,7 +629,7 @@ header {
   cursor: pointer;
 }
 
-/* Track */
+/* Трек */
 .volume-slider::-webkit-slider-runnable-track {
   height: 6px;
   background: rgba(43, 156, 255, 0.35);
@@ -630,7 +642,7 @@ header {
   border-radius: 4px;
 }
 
-/* Thumb */
+/* Повзунок */
 .volume-slider::-webkit-slider-thumb {
   appearance: none;
   width: 14px;
@@ -652,9 +664,9 @@ header {
   cursor: pointer;
 }
 
-/* ========== АДАПТИВ ДЛЯ ВСЬОГО САЙТУ ========== */
+/* Адаптація під різні екрани (спроба) */
 
-/* Великі екрани (1200px+) - БАЗОВІ СТИЛІ */
+
 @media (min-width: 1200px) {
   .center-card {
     max-width: var(--page-max-width);
@@ -688,7 +700,7 @@ header {
   }
 }
 
-/* Екрани 992px - 1199px (вузькі ноутбуки) */
+
 @media (min-width: 992px) and (max-width: 1199px) {
   :root {
     --page-max-width: 900px;
@@ -721,7 +733,7 @@ header {
   }
 }
 
-/* Таблети (768px - 991px) */
+
 @media (min-width: 768px) and (max-width: 991px) {
   :root {
     --page-max-width: 100%;
@@ -774,7 +786,7 @@ header {
   }
 }
 
-/* Великі мобільні (600px - 767px) */
+
 @media (min-width: 600px) and (max-width: 767px) {
   :root {
     --page-max-width: 100%;
@@ -838,7 +850,7 @@ header {
   }
 }
 
-/* Мобільні телефони (480px - 599px) */
+
 @media (min-width: 480px) and (max-width: 599px) {
   :root {
     --page-max-width: 100%;
@@ -912,7 +924,7 @@ header {
   }
 }
 
-/* Маленькі мобільні (менше 480px) */
+
 @media (max-width: 479px) {
   :root {
     --page-max-width: 100%;
@@ -1015,4 +1027,24 @@ header {
   height: auto;
   margin-top: 20px;
   border-radius: 10px;
+}
+
+.EndTxt {
+  text-align: left;
+  margin-top: 50px;
+}
+
+.People {
+  margin-bottom: 20px;
+}
+
+.ScenterTxt {
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 100px;  
+}
+
+.EcenterTxt {
+  font-size: 50px;
+  text-align: center;
 }

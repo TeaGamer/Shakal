@@ -3,7 +3,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
 /*
-  Типи епох, які використовуються для фону
+  Ід епох 
 */
 type Epoch =
   | "home"
@@ -15,24 +15,12 @@ type Epoch =
   | "about";
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  /*
-    Стан теми
-  */
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  /*
-    Прапорець, що компонент змонтовано (щоб уникнути hydration mismatch)
-  */
   const [mounted, setMounted] = useState(false);
 
-  /*
-    Прапорець готовності всіх фонових зображень
-  */
   const [assetsReady, setAssetsReady] = useState(false);
 
-  /*
-    Початкове налаштування: тема + стартовий фон
-  */
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
     const initialTheme = savedTheme ?? "dark";
@@ -40,16 +28,12 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(initialTheme);
     document.documentElement.setAttribute("data-theme", initialTheme);
 
-    // Стартовий фон — головна сторінка
     document.documentElement.setAttribute("data-epoch", "home");
 
     setMounted(true);
   }, []);
 
-  /*
-    Предзавантаження всіх фонових зображень
-    Сайт зʼявиться тільки після завершення
-  */
+  /* передзавантаження фонових зображень */
   useEffect(() => {
     if (!mounted) return;
 
@@ -73,14 +57,12 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     sources.forEach((src) => {
       const img = new Image();
       img.onload = handleDone;
-      img.onerror = handleDone; // не блокуємо сайт при помилці
+      img.onerror = handleDone; 
       img.src = src;
     });
   }, [mounted]);
 
-  /*
-    Автоматична зміна фону при прокрутці сторінки
-  */
+  /* зміна фону залежно від видимої секції */
   useEffect(() => {
     if (!mounted || !assetsReady) return;
 
@@ -143,9 +125,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     return () => observer.disconnect();
   }, [mounted, assetsReady]);
 
-  /*
-    Перемикання теми
-  */
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
@@ -153,9 +132,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute("data-theme", next);
   };
 
-  /*
-    Поки сайт або ресурси не готові — показуємо GIF-лоадер
-  */
+  /* ----------------- Загрузочний екран ----------------- */
   if (!mounted || !assetsReady) {
     return (
       <div
@@ -181,9 +158,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  /*
-    Основний рендер сайту
-  */
   return (
     <>
       {/* Кнопка перемикання теми */}
@@ -195,7 +169,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         {theme === "dark" ? "🌙" : "☀️"}
       </button>
 
-      {/* Права навігація */}
+      {/* Кнопки зправа */}
       <nav className="side-nav">
         <button
           className="nav-btn nav-home"

@@ -22,7 +22,7 @@ export default function LogoLoopAndFlipCards({
     setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Перевіряємо чи хоча б одна картка перевернута
+  // Перевірка перевернутих карток
   const isAnyCardFlipped = Object.values(flipped).some(val => val === true);
 
   return (
@@ -35,7 +35,6 @@ export default function LogoLoopAndFlipCards({
           --total-width: calc(var(--card-width) * var(--card-count) + var(--card-gap) * (var(--card-count) - 1)); /* загальна ширина одної копії */
         }
 
-        /* КОНВЕЄРНА АНІМАЦІЯ - СПРАВА НАЛІВО */
         @keyframes scrollConveyorRight {
           0% {
             transform: translateX(0);
@@ -45,7 +44,6 @@ export default function LogoLoopAndFlipCards({
           }
         }
 
-        /* КОНТЕЙНЕР КАРТОК - ВСІМ РЯДАМ */
         .cards-row {
           display: flex;
           flex-wrap: nowrap;
@@ -59,7 +57,7 @@ export default function LogoLoopAndFlipCards({
           margin-bottom: 40px;
         }
 
-        /* FADE OUT ЕФЕКТ НА КРАЯХ */
+        /* Градієнт по краях */
         .cards-row::before,
         .cards-row::after {
           content: '';
@@ -71,19 +69,16 @@ export default function LogoLoopAndFlipCards({
           pointer-events: none;
         }
 
-        /* FADE OUT ЗЛІВА */
         .cards-row::before {
           left: 0;
-          background: linear-gradient(to right, rgba(30, 30, 30, 1) 0%, rgba(30, 30, 30, 0) 100%);
+          background: linear-gradient(to right, var(--bg-secondary) 0%, transparent 100%);
         }
 
-        /* FADE OUT СПРАВА */
         .cards-row::after {
           right: 0;
-          background: linear-gradient(to left, rgba(30, 30, 30, 1) 0%, rgba(30, 30, 30, 0) 100%);
+          background: linear-gradient(to left, var(--bg-secondary) 0%, transparent 100%);
         }
 
-        /* ПЕРШИЙ РЯД - СПРАВА НАЛІВО */
         .cards-row.row-1 {
           display: flex;
           flex-wrap: nowrap;
@@ -92,14 +87,14 @@ export default function LogoLoopAndFlipCards({
           position: relative;
         }
 
-        /* FLIP CARDS 3D - ПЕРШИЙ РЯД */
+
         .cards-row.row-1 .flip-card-3d { 
           perspective: 1000px;
           overflow: hidden;
           animation: scrollConveyorRight 28s linear infinite;
         }
 
-        /* ПАУЗА АНІМАЦІЇ КОЛИ БУДЬ-ЯКА КАРТКА ПЕРЕВЕРНУТА */
+        /* зупинка анімації якщо картку перегорнуто */
         .cards-row.row-1.paused .flip-card-3d {
           animation-play-state: paused !important;
         }
@@ -135,7 +130,7 @@ export default function LogoLoopAndFlipCards({
           transform: rotateY(180deg); 
         }
 
-        /* IMAGE SQUARE */
+        /* Контейнер для фото */
         .card-image-wrap {
           width: 100%;
           aspect-ratio: 1;
@@ -173,7 +168,7 @@ export default function LogoLoopAndFlipCards({
           z-index: 12;
         }
 
-        /* СТИЛІ ТЕКСТІВ КАРТОК */
+        /* Текст карток */
         .text-title { 
           font-size: 12px; 
           font-weight: 700; 
@@ -200,9 +195,6 @@ export default function LogoLoopAndFlipCards({
           background: rgba(0,0,0,0.06); 
         }
 
-        /* ===== АДАПТИВ ДЛЯ РІЗНИХ ЕКРАНІВ ===== */
-        
-        /* Великі екрани (1200px+) */
         @media (min-width: 1200px) {
           :root {
             --card-gap: 75px;
@@ -212,7 +204,6 @@ export default function LogoLoopAndFlipCards({
           .cards-row.row-1 .flip-card-3d { animation: scrollConveyorRight 28s linear infinite; }
         }
 
-        /* Середні екрани (768px - 1199px) */
         @media (min-width: 768px) and (max-width: 1199px) {
           :root {
             --card-gap: 55px;
@@ -224,7 +215,7 @@ export default function LogoLoopAndFlipCards({
           .cards-row.row-1 .flip-card-3d { animation: scrollConveyorRight 24s linear infinite; }
         }
 
-        /* Таблети (600px - 767px) */
+
         @media (min-width: 600px) and (max-width: 767px) {
           :root {
             --card-gap: 40px;
@@ -237,7 +228,6 @@ export default function LogoLoopAndFlipCards({
           .cards-row.row-1 .flip-card-3d { animation: scrollConveyorRight 20s linear infinite; }
         }
 
-        /* Мобільні телефони (480px - 599px) */
         @media (min-width: 480px) and (max-width: 599px) {
           :root {
             --card-gap: 25px;
@@ -250,7 +240,6 @@ export default function LogoLoopAndFlipCards({
           .cards-row.row-1 .flip-card-3d { animation: scrollConveyorRight 17s linear infinite; }
         }
 
-        /* Маленькі мобільні (менше 480px) */
         @media (max-width: 479px) {
           :root {
             --card-gap: 15px;
@@ -266,14 +255,13 @@ export default function LogoLoopAndFlipCards({
 
       `}</style>
 
-      {/* Logo loop */}
+      {/* Конвеєр */}
       
-      {/* === ПЕРШИЙ РЯД - СПРАВА НАЛІВО === */}
       <div className={`cards-row row-1 ${isAnyCardFlipped ? 'paused' : ''}`} role="list">
         {[...cards, ...cards].map((c, idx) => (
           <div key={`row1-${c.id}-${idx}`} className="card-item flip-card-3d" role="listitem">
             <div className={`flip-card-inner ${flipped[c.id] ? "flipped" : ""}`}>
-              {/* FRONT */}
+              {/* Перед картки */}
               <div className="flip-card-face bg-white border shadow-sm">
                 <div className="card-front-inner">
                   <div className="card-image-wrap" aria-hidden>
@@ -288,7 +276,7 @@ export default function LogoLoopAndFlipCards({
                 </div>
               </div>
 
-              {/* BACK */}
+              {/* Зад картки */}
               <div className="flip-card-face flip-card-back bg-gray-50 border shadow-sm">
                 <div className="flex flex-col items-start justify-center gap-2 w-full h-full p-3">
                   <p className="text-xs text-gray-200 leading-snug" style={{color: "rgba(255,255,255,0.9)", fontSize: "10px", lineHeight: "1.3"}}>
