@@ -147,7 +147,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         }}
       >
         <img
-          src="/Uia.gif"
+          src="/Loading.gif"
           alt="Loading"
           style={{
             width: "200px",

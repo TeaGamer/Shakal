@@ -192,13 +192,23 @@ export default function LogoLoopAndFlipCards({
         }
         
         .flip-card-face.bg-gray-50 { 
-          background: rgba(0,0,0,0.06); 
+          background: rgba(0,0,0,0.06);
+        }
+
+        [data-theme="light"] .flip-card-face.bg-gray-50 {
+          background: rgba(245, 245, 245, 0.9);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] .flip-card-face.bg-gray-50 {
+          background: rgba(0, 0, 0, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @media (min-width: 1200px) {
           :root {
             --card-gap: 75px;
-            --card-width: 140px;
+            --card-width: 200px;
           }
           .flip-card-inner { min-height: 240px; }
           .cards-row.row-1 .flip-card-3d { animation: scrollConveyorRight 28s linear infinite; }
@@ -207,7 +217,7 @@ export default function LogoLoopAndFlipCards({
         @media (min-width: 768px) and (max-width: 1199px) {
           :root {
             --card-gap: 55px;
-            --card-width: 130px;
+            --card-width: 200px;
           }
           .flip-card-inner { min-height: 220px; }
           .text-title { font-size: 11px; }
@@ -219,7 +229,7 @@ export default function LogoLoopAndFlipCards({
         @media (min-width: 600px) and (max-width: 767px) {
           :root {
             --card-gap: 40px;
-            --card-width: 110px;
+            --card-width: 200px;
           }
           .flip-card-inner { min-height: 200px; }
           .card-front-inner { gap: 10px; padding: 10px; }
@@ -231,7 +241,7 @@ export default function LogoLoopAndFlipCards({
         @media (min-width: 480px) and (max-width: 599px) {
           :root {
             --card-gap: 25px;
-            --card-width: 95px;
+            --card-width: 200px;
           }
           .flip-card-inner { min-height: 180px; }
           .card-front-inner { gap: 8px; padding: 8px; }
@@ -243,7 +253,7 @@ export default function LogoLoopAndFlipCards({
         @media (max-width: 479px) {
           :root {
             --card-gap: 15px;
-            --card-width: 80px;
+            --card-width: 200px;
           }
           .flip-card-inner { min-height: 160px; }
           .card-front-inner { gap: 6px; padding: 6px; }
@@ -279,7 +289,7 @@ export default function LogoLoopAndFlipCards({
               {/* Зад картки */}
               <div className="flip-card-face flip-card-back bg-gray-50 border shadow-sm">
                 <div className="flex flex-col items-start justify-center gap-2 w-full h-full p-3">
-                  <p className="text-xs text-gray-200 leading-snug" style={{color: "rgba(255,255,255,0.9)", fontSize: "10px", lineHeight: "1.3"}}>
+                  <p className="text-xs leading-snug" style={{color: "var(--text-primary, #000)", fontSize: "10px", lineHeight: "1.3", textAlign: "left"}}>
                     {c.text}
                   </p>
 

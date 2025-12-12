@@ -667,7 +667,38 @@ header {
 /* Адаптація під різні екрани (спроба) */
 
 
-@media (min-width: 1200px) {
+@media (min-width: 1920px) {
+  :root {
+    --page-max-width: 1400px;
+  }
+  
+  .center-card {
+    max-width: var(--page-max-width);
+    padding: 50px;
+    margin-left: var(--card-shift);
+    margin-right: calc(var(--side-width) + var(--gutter));
+  }
+
+  .section h2 {
+    font-size: 52px;
+    margin-bottom: 24px;
+  }
+
+  .section {
+    padding-bottom: 60px;
+  }
+
+  .content-with-image {
+    gap: 40px;
+  }
+
+  .lyrics {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1919px) {
   .center-card {
     max-width: var(--page-max-width);
     padding: 40px;
@@ -1034,7 +1065,7 @@ header {
   margin-top: 50px;
 }
 
-.People {
+.EndTxt p {
   margin-bottom: 20px;
 }
 
