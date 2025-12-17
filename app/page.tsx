@@ -13,11 +13,23 @@ export default function HomePage() {
           <section id="home" className=""> {/*Тимчасовий КласНейм*/}
             <div className="EndTxt">
               <h1 className="ScenterTxt">ІСТОРІЯ СПОРЯДЖЕННЯ УКРАЇНСЬКОГО ВОЇНА</h1>
+                          <div style={{ width: '100%', maxWidth: '800px', margin: '20px auto' }}>
+              <iframe 
+                width="100%" 
+                height="450" 
+                src="https://www.youtube.com/embed/gV5UDcGkJYA" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+                style={{ borderRadius: '8px' }}
+              />
+            </div>
               <p className="People">Цей проєкт присвячений спорядженню українських воїнів у різні історичні періоди — від княжої доби до сучасної армії. Ми зібрали основні елементи, які визначали вигляд і можливості воїна кожної епохи: засоби захисту, одяг, дрібне оснащення та предмети, що супроводжували його в походах і боях.</p>
               <p className="People">Мета проєкту — показати, як змінювалися підходи до екіпірування, які матеріали використовувалися, що вважали необхідним у бою, а що — зайвим. Через ці зміни добре видно, як розвивалися військові традиції, технічні можливості та умови, у яких доводилося воювати.</p>
               <p className="People"> Ми прагнули зробити інформацію зрозумілою та доступною: короткі описи, наочні приклади та згадка музеїв і джерел, де можна побачити реальні експонати. Проєкт покликаний допомогти краще уявити, як виглядав український воїн у різні часи та чому саме так.</p>
             </div>
-            <div>
+            <div className="Goloba">
               <a href="#epoch-1">
                 <img src="/Epoch1War.png" alt="Княжа Доба воїн" className="Golova" />
               </a>  

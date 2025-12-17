@@ -1053,11 +1053,16 @@ header {
   }
 }
 
+.Goloba {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .Golova {
   width: 200px;
-  height: auto;
-  margin-top: 20px;
-  border-radius: 10px;
+  height: auto; 
 }
 
 .EndTxt {
